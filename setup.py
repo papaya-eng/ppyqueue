@@ -4,7 +4,7 @@
 sdict = {
     'name': 'ppyqueue',
     'version': "0.2.1",
-    'install_requires': ['ppyagent'],
+    'install_requires': ['pyro'],
     'packages': ['ppyqueue'],
     'package_dir': {'ppyqueue': 'ppyqueue'},
     'author': 'Li Chun',
