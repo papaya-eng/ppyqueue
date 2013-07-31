@@ -1,0 +1,9 @@
+syntax: glob
+
+*.egg*
+*.pyc
+*.pyo
+*.swp
+build
+dist
+sample
