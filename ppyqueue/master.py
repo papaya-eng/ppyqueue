@@ -172,7 +172,7 @@ class RedisStore(BaseStore):
         attributes = self.__class__.get_attrs(attributes)
         attributes['state'] = 0
         attributes['time'] = datetime.datetime.now()
-        pipe = self._store.pipeline()
+        pipe = self._store.pipeline(transaction=False)
         pipe.set('t%s' % task_id, self.__class__.pack(attributes))
         if attributes['key']:  # check consistent
             pipe.set('k%s' % attributes['key'], task_id)
@@ -217,7 +217,7 @@ class RedisStore(BaseStore):
                 return None
             task['worker_info'] = worker_info
             task['state'] = 1
-            pipe = self._store.pipeline()
+            pipe = self._store.pipeline(transaction=False)
             pipe.set('t%s' % task_id, self.__class__.pack(task))
             pipe.sadd('running_tasks', task_id)
             pipe.execute()
@@ -268,7 +268,7 @@ class RedisStore(BaseStore):
 
     def destroy_task(self, id):
         with self.getlock(id):
-            pipe = self._store.pipeline()
+            pipe = self._store.pipeline(transaction=False)
             pipe.delete('t%s' % id)
             pipe.srem('running_tasks', id)
             pipe.execute()
