@@ -108,7 +108,7 @@ class TaskDoer:
             self._run_hook('on_task_executing', func=func, sub=sub, kw=kw,
                            lang=self._lang)
             return_value = func(*sub, **kw)
-            print return_value
+            logger.info(str(return_value))
             self._run_hook('on_task_finished', func=func, sub=sub, kw=kw,
                            lang=self._lang, return_value=return_value)
             ret['status'] = 1
