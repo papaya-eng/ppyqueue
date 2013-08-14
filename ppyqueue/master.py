@@ -19,9 +19,7 @@ import threading
 import queue_config
 import ppyagent
 import Pyro.core
-import sys
 import os
-import getopt
 import utility
 
 utility.claim_limit()
