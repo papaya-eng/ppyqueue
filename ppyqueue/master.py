@@ -255,8 +255,7 @@ class RedisStore(BaseStore):
             else:
                 self._store.srem('running_tasks', task_id)
 
-    def check_worker_info(self, id, worker_info={}):
-        task = self._get_task(id)
+    def check_worker_info(self, task, worker_info={}):
         if task and (task['worker_info'].get('host'),
                      task['worker_info'].get('port')) == \
                 (worker_info.get('host'), worker_info.get('port')):
@@ -445,7 +444,7 @@ class PQServer(Pyro.core.ObjBase):
         store = self._stores[queue_index]
         task = store.get_task(id)
         ret = None
-        if task and store.check_worker_info(id, worker_info):
+        if task and store.check_worker_info(task[1], worker_info):
             store.destroy_task(id)
             ret = True
             logger.info("TASK_FINISH %s %s %s:%s in queue %s" % (id,
@@ -463,7 +462,7 @@ class PQServer(Pyro.core.ObjBase):
         ret = None
         store = self._stores[queue_index]
         task = store.get_task(id)
-        if task and store.check_worker_info(id, worker_info):
+        if task and store.check_worker_info(task[1], worker_info):
             task[1]['worker_info'] = {}
             ret = True
             if task[1]['retry'] >= task[1]['max_retry']:
